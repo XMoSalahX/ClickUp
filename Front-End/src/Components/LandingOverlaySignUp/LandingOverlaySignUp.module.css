@@ -1,0 +1,113 @@
+.backGround {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(https://clickup.com/landing/images/mail-cather__bg.svg)
+    no-repeat 0 50%/890px;
+  animation-name: landingOverlayBackground;
+  animation-duration: 1s;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 930px) {
+  .backGround {
+    background: url(https://clickup.com/landing/images/mail-cather__bg.svg)
+      no-repeat;
+    background-size: cover;
+    left: 0%;
+    flex-direction: column;
+    padding-top: 50px;
+    gap: 40px;
+  }
+  .backGround p {
+    margin-left: 0px !important;
+  }
+  .button {
+    display: inline-grid;
+  }
+  .InputeContainers {
+    margin-left: 0px !important;
+  }
+}
+
+@media (max-width: 470px) {
+  .InputeContainers {
+    width: 95%;
+  }
+}
+
+@media (max-width: 670px) {
+  .backGround {
+    background: url(https://clickup.com/landing/images/mail-cather__bg-mobile.svg)
+      no-repeat;
+    background-size: cover;
+    padding-top: 100px;
+  }
+  .backGround p {
+    font-size: 17px !important;
+  }
+  .button {
+    display: inline-grid;
+  }
+  .InputeContainers {
+    overflow: hidden;
+  }
+  b {
+    font-size: 37px !important;
+  }
+}
+
+@keyframes landingOverlayBackground {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 0;
+  }
+}
+
+.backGround p {
+  color: white;
+  font-size: 1.48em;
+  font-weight: bold;
+  margin: 0;
+  margin-left: 10%;
+}
+
+b {
+  font: 800 44px/1.2 Axiforma, Arial, serif;
+}
+
+.InputeContainers {
+  margin-left: 40px;
+  display: inline-block;
+  position: relative;
+  animation-duration: 1s;
+  opacity: 1;
+  animation-name: input;
+  border: 6px solid #fff3f361;
+  border-radius: 15px;
+}
+
+@keyframes input {
+  0% {
+    opacity: 0;
+    margin-left: 400px;
+  }
+  100% {
+    opacity: 1;
+    margin-left: 40px;
+  }
+}
+
+.button {
+  position: absolute;
+  top: 50%;
+  width: 80%;
+  right: -86%;
+  transform: translate(-50%, -50%);
+  height: 75%;
+}

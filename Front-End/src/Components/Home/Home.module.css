@@ -1,0 +1,167 @@
+.homeFullWidth {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+}
+
+.homeFullWidth:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: calc(50vw + 60px);
+  width: 1143px;
+  height: 1149px;
+  background: url("https://clickup.com/landing/images/home-header-bg.jpg")
+    no-repeat top right/cover;
+  -webkit-transform: translate(0, -28.5%);
+  -ms-transform: translate(0, -28.5%);
+  transform: translate(0, -28.5%);
+  transition: unset;
+  z-index: -1;
+}
+@media only screen and (max-width: 991px) {
+  .homeFullWidth:before {
+    display: block;
+  }
+}
+
+@media (max-width: 1220px) {
+  .homeFullWidth:before {
+    left: unset;
+    right: 520px;
+    -webkit-transform: translate(100%, -28.5%);
+    -ms-transform: translate(100%, -28.5%);
+    transform: translate(100%, -28.5%);
+  }
+}
+
+@media (max-width: 1000px) {
+  .homeFullWidth:before {
+    -webkit-transform: translate(87%, -28.5%);
+    -ms-transform: translate(87%, -28.5%);
+    transform: translate(87%, -28.5%);
+    right: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  .homeFullWidth:before {
+    left: 100px;
+    right: unset;
+    transform: translate(0, -45%);
+  }
+  .home_content input {
+    width: -webkit-fill-available !important;
+  }
+}
+
+.home_container {
+  max-width: 1160px;
+  min-height: 100vh;
+  margin: auto;
+  padding-top: 160px;
+  padding-inline: 40px;
+}
+
+h1 {
+  font: 800 50px/69px Axiforma, Arial, serif;
+  color: var(--color-grey-0);
+}
+
+p {
+  color: #292d34;
+  font: 400 14px/29px Axiforma, Arial, serif;
+}
+
+.buttonBeforeText {
+  position: relative;
+  width: 360px;
+  height: 75px;
+}
+
+.buttonBeforeText:after {
+  content: "FREE FOREVER.    NO CREDIT CARD.";
+  position: absolute;
+  top: 0;
+  right: 50px;
+  width: 140px;
+  height: 40px;
+  font-weight: 700;
+  margin-top: 2px;
+  color: var(--color-grey-2);
+}
+
+.ratingWithText {
+  display: flex;
+  align-items: center;
+  color: var(--color-grey-1);
+  margin-top: 20px;
+}
+
+.ratingCompany {
+  margin-top: 20px;
+}
+
+.video {
+  width: 133%;
+  height: auto;
+  margin-left: 65px;
+  margin-top: 39px;
+}
+
+.landingRightSide {
+  width: 50%;
+}
+
+.home_content {
+  display: flex;
+}
+
+.mainCompanies {
+  margin: auto;
+  color: var(--color-grey-1);
+  font: 700 10px Axiforma, Arial, serif;
+  margin-top: 100px;
+  text-align: center;
+}
+
+.mainCompaniesLogos {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-evenly;
+  padding-inline: 150px;
+}
+
+@media (max-width: 1440px) {
+  h1 {
+    font: 800 39px/53px Axiforma, Arial, serif;
+  }
+  .video {
+    width: 110%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .home_content {
+    flex-direction: column-reverse;
+  }
+  .landingRightSide {
+    width: 90%;
+  }
+  .video {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 1000px) {
+  .mainCompaniesLogos {
+    flex-direction: column;
+    padding: 10px;
+  }
+  .mainCompaniesLogos span {
+    display: block !important;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

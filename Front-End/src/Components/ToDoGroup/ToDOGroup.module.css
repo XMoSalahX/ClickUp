@@ -1,0 +1,75 @@
+.status {
+  background: #fff !important;
+  box-shadow: 0 1px 2px 1px #0000000f;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #544d61;
+}
+
+.headStatus {
+  position: relative;
+}
+
+.addTaskBtn {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background: #ccc;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 5px;
+  display: none;
+  cursor: pointer;
+}
+
+.addTaskBtn:before {
+  content: "";
+  width: 2px;
+  height: 12px;
+  background: #544d61a6;
+  top: 50%;
+  right: 50%;
+  position: absolute;
+  border-radius: 50px;
+  transform: translate(50%, -50%);
+}
+
+.addTaskBtn:after {
+  content: "";
+  width: 2px;
+  height: 12px;
+  background: #544d61a6;
+  top: 50%;
+  right: 50%;
+  position: absolute;
+  border-radius: 50px;
+  transform: translate(50%, -50%) rotate(90deg);
+}
+
+.headStatus:hover .addTaskBtn {
+  display: inline-block;
+}
+
+.addTaskBtn:hover {
+  background: #544d61a6;
+}
+
+.addTaskBtn:hover:after {
+  background: white;
+}
+
+.addTaskBtn:hover:before {
+  background: white;
+}
+
+.tasksContainer {
+  margin-top: 20px;
+  width: 100%;
+  min-height: 150px;
+  padding-bottom: 50px;
+}

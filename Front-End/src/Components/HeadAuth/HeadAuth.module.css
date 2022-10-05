@@ -1,0 +1,10 @@
+h1 {
+  font: 700 31px/69px Axiforma, Arial, serif;
+  color: var(--color-grey-0);
+}
+@media (max-width: 500px) {
+  h1 {
+    font: 700 26px/69px Axiforma, Arial, serif;
+    color: var(--color-grey-0);
+  }
+}

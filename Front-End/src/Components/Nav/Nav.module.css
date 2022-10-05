@@ -1,0 +1,30 @@
+.navFlex {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.navVisabile {
+  display: none;
+  background-color: transparent;
+  border: none;
+}
+
+@media (max-width: 930px) {
+  .navFlex {
+    display: none;
+    justify-content: flex-end;
+  }
+
+  .navVisabile {
+    display: block;
+  }
+}
+
+.navVisabile div {
+  width: 30px;
+  margin-bottom: 5px;
+  height: 4px;
+  background-color: white;
+  border-radius: 5px;
+}

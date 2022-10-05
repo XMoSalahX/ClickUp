@@ -1,0 +1,83 @@
+.navMob {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  background-color: white;
+  text-align: center;
+  box-shadow: -5px -1px 10px -2px rgb(0 0 0 / 30%);
+  animation-name: showNavMob;
+  animation-duration: 0.3s;
+  padding-block: 20px;
+  height: calc(100vh);
+}
+
+@keyframes showNavMob {
+  0% {
+    right: -100%;
+  }
+  100% {
+    right: 0;
+  }
+}
+
+@media (min-width: 930px) {
+  .navMob {
+    display: none;
+  }
+}
+
+.headMob {
+  display: flex;
+  padding: 6%;
+  justify-content: space-between;
+}
+
+.closeNavMob {
+  width: 35px;
+  height: 35px;
+  position: relative;
+}
+
+.closeNavMob:before {
+  content: "";
+  width: 4px;
+  height: 35px;
+  background-color: var(--color-grey-0);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  border-radius: 10px;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.closeNavMob:after {
+  content: "";
+  width: 4px;
+  height: 35px;
+  background-color: var(--color-grey-0);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  border-radius: 10px;
+  transform: translateX(-50%) rotate(-45deg);
+}
+
+@media (max-width: 500px) {
+  .closeNavMob {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .closeNavMob:before {
+    height: 20px !important;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .closeNavMob:after {
+    height: 20px;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+}

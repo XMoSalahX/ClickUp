@@ -1,0 +1,33 @@
+.TaskContainer {
+  background: #fff !important;
+  box-shadow: 0 1px 2px 1px #0000000f;
+  height: auto;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  padding-inline: 20px;
+  border-radius: 5px;
+  font-weight: 600;
+  color: #544d61;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.TaskContainer:hover {
+  box-shadow: 0 1px 2px 1px #00000038;
+}
+
+.priority {
+  font-size: 10px;
+}
+
+.title {
+  width: 80%;
+  overflow: hidden;
+  cursor: pointer;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}

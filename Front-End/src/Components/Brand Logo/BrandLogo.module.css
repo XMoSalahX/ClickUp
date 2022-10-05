@@ -1,0 +1,9 @@
+@media (max-width: 500px) {
+  .svgSmallSecreen {
+    width: 120px;
+  }
+}
+
+a:hover {
+  cursor: pointer;
+}

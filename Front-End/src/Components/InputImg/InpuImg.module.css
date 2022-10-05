@@ -1,0 +1,8 @@
+@media (max-width: 500px) {
+  .svgSmallSecreen {
+    width: 16px !important;
+
+    top: 30px !important;
+    left: 10px !important;
+  }
+}

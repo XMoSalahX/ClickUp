@@ -1,0 +1,5 @@
+@media (max-width: 450px) {
+  .mobWidth {
+    padding-inline: 5px !important;
+  }
+}

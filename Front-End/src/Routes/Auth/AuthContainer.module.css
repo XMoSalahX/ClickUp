@@ -1,0 +1,190 @@
+.fromContainer {
+  padding: 0 30px 30px 30px;
+  z-index: -1;
+}
+
+@media (max-width: 500px) {
+  .fromContainer {
+    padding: 0 10px 30px 10px;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 17vh;
+  background-color: #fafbfc;
+  align-items: self-start;
+  padding-top: 20px;
+}
+
+.developerInformation {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  font-weight: 500;
+  color: #4a4a4a;
+}
+
+.backgroundContainer {
+  position: absolute;
+  height: calc(100% - 17vh);
+  width: 100%;
+  top: 17vh;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: url(https://app-cdn.clickup.com/login__bg.8e44616319b55ac1.svg)
+    center 10px no-repeat;
+  background-size: cover;
+  z-index: -1;
+  position: fixed;
+}
+
+.backgroundContainer:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 200%;
+  height: 300%;
+  top: -100%;
+  left: -50%;
+  background: url(https://app-cdn.clickup.com/login__bg-dots.4777a8eaedc1248b.svg);
+  transform: rotate(-28deg);
+  z-index: -1;
+}
+
+.backgroundContainer:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: url(https://app-cdn.clickup.com/login__bg-top.f55110285bf7cd54.svg)
+    center top no-repeat;
+  background-size: 100%;
+  z-index: -1;
+}
+
+@media (max-width: 700px) {
+  .backgroundcontainer:after {
+    background-size: 100% 50vh;
+  }
+  .developerInformation div {
+    display: none;
+  }
+  .help {
+    display: none !important;
+  }
+}
+
+.contentContainer {
+  max-width: 480px;
+  height: auto;
+
+  margin: 20px auto;
+
+  border-radius: 10px;
+}
+
+.dataContanier {
+  max-width: 480px;
+  height: 100%;
+  background-color: white;
+  border-radius: 10px;
+  background: #fff;
+  position: relative;
+  box-shadow: 0 24px 64px #26214a1a;
+}
+
+.contentFooter {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 15px;
+  color: #7c828d;
+  background-color: #fafbfc;
+  position: absolute;
+  bottom: 0;
+  width: calc(100%);
+  border-radius: 0 0 12px 12px;
+  border-top: 1px solid #e9ebf0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 31px;
+  padding: 4px 16px;
+}
+
+a {
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 15px;
+  color: #7c828d;
+  text-decoration: underline;
+  padding: 0 3px;
+}
+
+.help {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: red;
+  position: absolute;
+  bottom: 0;
+  right: -60px;
+  box-shadow: 0 5px 15px #101e3626;
+  background: rgba(255, 255, 255, 0.16);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 10px;
+  color: white;
+  font-weight: bold;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.help:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.svgHelp {
+  width: 16px;
+  height: 16px;
+}
+
+.imgGroup {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.seeWhy {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: center;
+  opacity: 0.6;
+  margin-top: 15px;
+  color: #fff;
+}
+
+@media (max-width: 500px) {
+  .contentFooter {
+    font-size: 9px;
+  }
+  a {
+    font-size: 9px;
+  }
+  .seeWhy {
+    font-size: 10px;
+  }
+}
