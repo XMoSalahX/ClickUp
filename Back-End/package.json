@@ -2,7 +2,7 @@
   "name": "clickup",
   "version": "1.0.0",
   "description": "Agile is an iterative methodology that incorporates a cyclic and collaborative process. Waterfall is a sequential methodology that can also be collaborative, but tasks are generally handled in a more linear process.",
-  "main": "server.js",
+  "main": "server.jscd",
   "scripts": {
     "build": "npx tsc",
     "start": "npx nodemon ./src/server.ts --watch"
