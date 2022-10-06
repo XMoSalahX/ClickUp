@@ -1,4 +1,4 @@
-import { useMemo, createRef, useRef, useEffect } from "react";
+import { useMemo, createRef, useRef, useEffect, memo } from "react";
 import styles from "./FormContent.module.css";
 import Input from "../Input/Input";
 import MainButton from "../MainButton/MainButton";
@@ -19,12 +19,10 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { Config } from "../../config/config";
 import { useNavigate } from "react-router-dom";
-import { memo } from "react";
 
 const config = new Config();
 
 const FormContent = ({ setOverContent, status, taskContent }) => {
-  console.log("FormContent");
   const buttonData = useMemo(() => {
     return {
       width: "40%",
@@ -58,7 +56,7 @@ const FormContent = ({ setOverContent, status, taskContent }) => {
   const targetRadio = useRef("");
   const navigate = useNavigate();
 
-  const userCollections = useSelector((state) => state.UserCollecions);
+  const token = useSelector((state) => state.UserCollecions.token);
 
   const submitHandeler = (e) => {
     e.preventDefault();
@@ -71,21 +69,20 @@ const FormContent = ({ setOverContent, status, taskContent }) => {
       } else {
         targetRadio.current = rad3.current.id;
       }
-      const data = {
+      const dataWillBeSend = {
         _id: `id-${uuidv4()}`,
         status: status.current,
         title: title.current.value,
         description: description.current.value,
         priority: targetRadio.current,
       };
-      dispath(setTask(data));
 
       fetch(`${config.api}/api/collecions/inserttask`, {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify(dataWillBeSend),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          authorization: "bearer " + userCollections.token,
+          authorization: "bearer " + token,
         },
       })
         .then((response) => response.json())
@@ -95,6 +92,7 @@ const FormContent = ({ setOverContent, status, taskContent }) => {
             navigate("/auth");
           } else {
             setOverContent(false);
+            dispath(setTask(dataWillBeSend));
           }
         });
     }
@@ -141,7 +139,7 @@ const FormContent = ({ setOverContent, status, taskContent }) => {
       body: JSON.stringify(data),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
-        authorization: "bearer " + userCollections.token,
+        authorization: "bearer " + token,
       },
     })
       .then((response) => response.json())
@@ -167,7 +165,7 @@ const FormContent = ({ setOverContent, status, taskContent }) => {
       body: JSON.stringify({ _id: taskContent.current._id }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
-        authorization: "bearer " + userCollections.token,
+        authorization: "bearer " + token,
       },
     })
       .then((response) => response.json())

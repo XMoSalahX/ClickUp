@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const config = new Config();
 
-const TaskHandeler = ({ collecionsFromStore, status }) => {
+const TaskHandeler = ({ status }) => {
   const [overContent, setOverContent] = useState(false);
   const taskData = useRef("");
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ const TaskHandeler = ({ collecionsFromStore, status }) => {
   };
 
   const taskOnClick = (e) => {
-    taskData.current = collecionsFromStore.filter((c) => {
+    taskData.current = currentStatues.filter((c) => {
       return c._id === e.target.parentElement.id;
     })[0];
 
@@ -71,7 +71,7 @@ const TaskHandeler = ({ collecionsFromStore, status }) => {
   };
 
   const renderHandeler = () => {
-    return collecionsFromStore.map((el) => {
+    return currentStatues.map((el) => {
       return (
         <div
           className={styles.TaskContainer}

@@ -29,20 +29,12 @@ const WorkSpace = () => {
     };
   }, []);
 
-  const collectionsFromStore = useSelector(
-    (state) => state.UserCollecions.collections
-  );
-
   const token = useSelector((state) => state.UserCollecions.token);
 
+  const FirstLunch = useRef(true);
+
   useEffect(() => {
-    if (
-      collectionsFromStore.Completed.length === 0 &&
-      collectionsFromStore.INprogress.length === 0 &&
-      collectionsFromStore.Rework.length === 0 &&
-      collectionsFromStore.TODO.length === 0 &&
-      collectionsFromStore.UnderReview.length === 0
-    ) {
+    if (FirstLunch.current === true) {
       fetch(`${config.api}/api/collecions/gettasks`, {
         method: "GET",
         headers: {
@@ -51,17 +43,20 @@ const WorkSpace = () => {
         },
       })
         .then((res) => res.json())
-        .then((data) => dispatch(getData(data.data[0].collections)));
+        .then((data) => {
+          if (
+            data.data[0].collections.Completed.length > 0 ||
+            data.data[0].collections.INprogress.length > 0 ||
+            data.data[0].collections.Rework.length > 0 ||
+            data.data[0].collections.TODO.length > 0 ||
+            data.data[0].collections.UnderReview.length > 0
+          ) {
+            dispatch(getData(data.data[0].collections));
+            FirstLunch.current = false;
+          }
+        });
     }
-  }, [
-    collectionsFromStore.Completed.length,
-    collectionsFromStore.INprogress.length,
-    collectionsFromStore.Rework.length,
-    collectionsFromStore.TODO.length,
-    collectionsFromStore.UnderReview.length,
-    dispatch,
-    token,
-  ]);
+  }, [dispatch, token]);
 
   const collections = useMemo(() => {
     return [
@@ -80,9 +75,9 @@ const WorkSpace = () => {
 
   return (
     <>
-      {overContent ? (
+      {overContent && status.current !== "" && (
         <FormContent setOverContent={setOverContent} status={status} />
-      ) : null}
+      )}
 
       <div className={styles.workSpaceContainer}>
         <header className={styles.workSpaceHeader}>
