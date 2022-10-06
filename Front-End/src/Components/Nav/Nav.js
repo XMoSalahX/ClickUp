@@ -22,14 +22,15 @@ export default function Nav() {
 
   //Change Nav button Color
   window.onscroll = (e) => {
-    if (window.pageYOffset > 0) {
-      console.log(navControler.current.childNodes);
-      for (let i = 0; i < navControler.current.childNodes.length; i++) {
-        navControler.current.childNodes[i].style.backgroundColor = "black";
-      }
-    } else {
-      for (let i = 0; i < navControler.current.childNodes.length; i++) {
-        navControler.current.childNodes[i].style.backgroundColor = "white";
+    if (navControler) {
+      if (window.pageYOffset > 0) {
+        for (let i = 0; i < navControler.current.childNodes.length; i++) {
+          navControler.current.childNodes[i].style.backgroundColor = "black";
+        }
+      } else {
+        for (let i = 0; i < navControler.current.childNodes.length; i++) {
+          navControler.current.childNodes[i].style.backgroundColor = "white";
+        }
       }
     }
   };

@@ -32,31 +32,34 @@ const TaskHandeler = ({ collecionsFromStore, status }) => {
     );
 
     let curentTask = { ...currentStatues[taskIndex] };
+    if (targetStatus !== undefined) {
+      dispatch(removeTask(currentStatues[taskIndex]));
+      curentTask.status = targetStatus;
+      curentTask.remove = true;
 
-    dispatch(removeTask(currentStatues[taskIndex]));
-    curentTask.status = targetStatus;
-    curentTask.remove = true;
+      dispatch(setTask(curentTask));
+      e.target.style.opacity = 1;
 
-    dispatch(setTask(curentTask));
-    e.target.style.opacity = 1;
-
-    fetch(`${config.api}/api/collecions/updatetask`, {
-      method: "PUT",
-      body: JSON.stringify({ _id: curentTask._id, status: targetStatus }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-        authorization: "bearer " + userCollections.token,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error === true) {
-          dispatch(reset());
-          navigate("/auth");
-        } else {
-          setOverContent(false);
-        }
-      });
+      fetch(`${config.api}/api/collecions/updatetask`, {
+        method: "PUT",
+        body: JSON.stringify({ _id: curentTask._id, status: targetStatus }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: "bearer " + userCollections.token,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error === true) {
+            dispatch(reset());
+            navigate("/auth");
+          } else {
+            setOverContent(false);
+          }
+        });
+    } else {
+      e.target.style.opacity = 1;
+    }
   };
 
   const taskOnClick = (e) => {

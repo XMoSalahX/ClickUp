@@ -8,6 +8,7 @@ import FormContent from "../../Components/FormContent/FormContent";
 import { useSelector, useDispatch } from "react-redux";
 import { getData, reset } from "../../store/UserCollecions";
 import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 
 const config = new Config();
 
@@ -72,10 +73,10 @@ const WorkSpace = () => {
     ];
   }, []);
 
-  const logOutHandeler = () => {
+  const logOutHandeler = useCallback(() => {
     dispatch(reset());
     navigate("/", { replace: true });
-  };
+  }, [dispatch, navigate]);
 
   return (
     <>

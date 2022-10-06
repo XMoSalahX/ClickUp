@@ -24,6 +24,7 @@ import { memo } from "react";
 const config = new Config();
 
 const FormContent = ({ setOverContent, status, taskContent }) => {
+  console.log("FormContent");
   const buttonData = useMemo(() => {
     return {
       width: "40%",
