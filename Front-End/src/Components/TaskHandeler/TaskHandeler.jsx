@@ -1,5 +1,5 @@
 import styles from "./TaskHandeler.module.css";
-import { useState, useRef, memo } from "react";
+import { useState, useRef } from "react";
 import FormContent from "../FormContent/FormContent";
 import { useSelector, useDispatch } from "react-redux";
 import { setTask, removeTask, reset } from "../../store/UserCollecions";
@@ -13,16 +13,17 @@ const TaskHandeler = ({ status }) => {
   const taskData = useRef("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const currentStatues = useSelector(
     (state) => state.UserCollecions.collections[status]
-  ); // one
+  );
   const token = useSelector((state) => state.UserCollecions.token);
 
-  const taskOnDrag = (e) => {
+  function taskOnDrag(e) {
     e.target.style.opacity = 0.5;
-  };
+  }
 
-  const taskOnDrop = (e) => {
+  function taskOnDrop(e) {
     const taskIndex = currentStatues.findIndex(
       (state) => state._id === e.target.id
     );
@@ -59,7 +60,7 @@ const TaskHandeler = ({ status }) => {
     } else {
       e.target.style.opacity = 1;
     }
-  };
+  }
 
   const taskOnClick = (e) => {
     taskData.current = currentStatues.filter((c) => {
@@ -79,7 +80,6 @@ const TaskHandeler = ({ status }) => {
           draggable={true}
           onDragStart={taskOnDrag}
           onDragEnd={taskOnDrop}
-          onDragOver={(e) => e.stopPropagation()}
         >
           <div className={styles.title} onClick={taskOnClick}>
             {el.title}
@@ -115,4 +115,4 @@ const TaskHandeler = ({ status }) => {
   );
 };
 
-export default memo(TaskHandeler);
+export default TaskHandeler;
