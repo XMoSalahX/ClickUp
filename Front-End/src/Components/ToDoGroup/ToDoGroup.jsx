@@ -1,6 +1,6 @@
 import styles from "./ToDOGroup.module.css";
 import { memo } from "react";
-import TaskHandeler from "../TaskHandeler/TaskHandeler";
+import TasksContainerHandeler from "../TasksContainerHandeler/TasksContainerHandeler";
 
 const ToDoGroup = ({ collections, setOverContent, status }) => {
   const insertTaskHandeler = (e) => {
@@ -42,7 +42,10 @@ const ToDoGroup = ({ collections, setOverContent, status }) => {
           className={`${styles.tasksContainer} ${item.id}`}
           onDragOver={dropHolderHandeler}
         >
-          <TaskHandeler status={item.id} setOverContent={setOverContent} />
+          <TasksContainerHandeler
+            status={item.id}
+            setOverContent={setOverContent}
+          />
         </div>
       </div>
     );
