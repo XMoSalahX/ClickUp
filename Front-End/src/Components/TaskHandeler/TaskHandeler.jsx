@@ -13,14 +13,10 @@ const TaskHandeler = ({ status }) => {
   const taskData = useRef("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const currentStatues = useSelector(
     (state) => state.UserCollecions.collections[status]
-  );
-
-  const userCollections = useSelector((state) => state.UserCollecions);
-
-  const targetStatus = useSelector((state) => state.UserCollecions.dropLocaion);
+  ); // one
+  const token = useSelector((state) => state.UserCollecions.token);
 
   const taskOnDrag = (e) => {
     e.target.style.opacity = 0.5;
@@ -32,9 +28,9 @@ const TaskHandeler = ({ status }) => {
     );
 
     let curentTask = { ...currentStatues[taskIndex] };
-    if (targetStatus !== undefined) {
+    if (Window.dropLocation !== undefined) {
       dispatch(removeTask(currentStatues[taskIndex]));
-      curentTask.status = targetStatus;
+      curentTask.status = Window.dropLocation;
       curentTask.remove = true;
 
       dispatch(setTask(curentTask));
@@ -42,10 +38,13 @@ const TaskHandeler = ({ status }) => {
 
       fetch(`${config.api}/api/collecions/updatetask`, {
         method: "PUT",
-        body: JSON.stringify({ _id: curentTask._id, status: targetStatus }),
+        body: JSON.stringify({
+          _id: curentTask._id,
+          status: Window.dropLocation,
+        }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          authorization: "bearer " + userCollections.token,
+          authorization: "bearer " + token,
         },
       })
         .then((response) => response.json())
@@ -80,6 +79,7 @@ const TaskHandeler = ({ status }) => {
           draggable={true}
           onDragStart={taskOnDrag}
           onDragEnd={taskOnDrop}
+          onDragOver={(e) => e.stopPropagation()}
         >
           <div className={styles.title} onClick={taskOnClick}>
             {el.title}

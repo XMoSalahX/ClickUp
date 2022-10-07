@@ -1,19 +1,21 @@
 import styles from "./ToDOGroup.module.css";
 import { memo } from "react";
 import TaskHandeler from "../TaskHandeler/TaskHandeler";
-import { useDispatch } from "react-redux";
-import { setDropLocation } from "../../store/UserCollecions";
 
 const ToDoGroup = ({ collections, setOverContent, status }) => {
-  const dispatch = useDispatch();
-
   const insertTaskHandeler = (e) => {
     status.current = e.target.id;
     setOverContent(true);
   };
 
   const dropHolderHandeler = (e) => {
-    dispatch(setDropLocation(e.target.className.split(" ")[1]));
+    if (Window.dropLocation !== undefined) {
+      if (Window.dropLocation !== e.target.className.split(" ")[1]) {
+        Window.dropLocation = e.target.className.split(" ")[1];
+      }
+    } else {
+      Window.dropLocation = e.target.className.split(" ")[1];
+    }
   };
 
   return collections.map((item) => {

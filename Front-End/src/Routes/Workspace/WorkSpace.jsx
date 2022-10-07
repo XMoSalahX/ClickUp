@@ -52,8 +52,8 @@ const WorkSpace = () => {
             data.data[0].collections.UnderReview.length > 0
           ) {
             dispatch(getData(data.data[0].collections));
-            FirstLunch.current = false;
           }
+          FirstLunch.current = false;
         });
     }
   }, [dispatch, token]);
