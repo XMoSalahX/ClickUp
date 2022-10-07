@@ -14,28 +14,24 @@ export default memo(function MainButton({
 
   useEffect(() => {
     if (!stable) {
-      const page = window.location.href;
-
       const background = colorContro.current.style.backgroundColor;
       const color = colorContro.current.style.color;
 
       window.addEventListener(
         "scroll",
         () => {
-          if (page === "http://localhost:3000/") {
-            if (colorContro.current !== null) {
-              if (window.pageYOffset > 0) {
-                colorContro.current.style.backgroundColor = color;
+          if (colorContro.current !== null) {
+            if (window.pageYOffset > 0) {
+              colorContro.current.style.backgroundColor = color;
 
-                if (background !== "white") {
-                  colorContro.current.style.color = "black";
-                } else {
-                  colorContro.current.style.color = background;
-                }
+              if (background !== "white") {
+                colorContro.current.style.color = "black";
               } else {
-                colorContro.current.style.color = color;
-                colorContro.current.style.backgroundColor = background;
+                colorContro.current.style.color = background;
               }
+            } else {
+              colorContro.current.style.color = color;
+              colorContro.current.style.backgroundColor = background;
             }
           }
         },
