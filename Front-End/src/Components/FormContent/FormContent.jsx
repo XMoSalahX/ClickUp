@@ -160,8 +160,6 @@ const FormContent = ({ setOverContent, status, taskContent }) => {
       _id: taskContent.current._id,
     };
 
-    console.log(taskContent.current);
-
     fetch(`${config.api}/api/collecions/delete`, {
       method: "DELETE",
       body: JSON.stringify({ _id: taskContent.current._id }),
