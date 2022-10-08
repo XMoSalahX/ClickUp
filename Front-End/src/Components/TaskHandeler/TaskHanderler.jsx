@@ -15,6 +15,7 @@ const TaskHanderler = memo(({ id, title, priority, status, elFromStore }) => {
   const taskData = useRef("");
   const token = useSelector((state) => state.UserCollecions.token);
   const el = { ...elFromStore };
+  taskData.current = el;
 
   function taskOnDrag(e) {
     e.target.style.opacity = 0.5;
