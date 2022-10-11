@@ -1,21 +1,12 @@
 import styles from "./ToDOGroup.module.css";
 import { memo } from "react";
 import TasksContainerHandeler from "../TasksContainerHandeler/TasksContainerHandeler";
+import { Droppable } from "react-beautiful-dnd";
 
 const ToDoGroup = ({ collections, setOverContent, status }) => {
   const insertTaskHandeler = (e) => {
     status.current = e.target.id;
     setOverContent(true);
-  };
-
-  const dropHolderHandeler = (e) => {
-    if (Window.dropLocation !== undefined) {
-      if (Window.dropLocation !== e.target.className.split(" ")[1]) {
-        Window.dropLocation = e.target.className.split(" ")[1];
-      }
-    } else {
-      Window.dropLocation = e.target.className.split(" ")[1];
-    }
   };
 
   return collections.map((item) => {
@@ -38,15 +29,23 @@ const ToDoGroup = ({ collections, setOverContent, status }) => {
             }}
           ></span>
         </div>
-        <div
-          className={`${styles.tasksContainer} ${item.id}`}
-          onDragOver={dropHolderHandeler}
-        >
-          <TasksContainerHandeler
-            status={item.id}
-            setOverContent={setOverContent}
-          />
-        </div>
+        <Droppable droppableId={item.id}>
+          {(provided) => {
+            return (
+              <div
+                className={`${styles.tasksContainer}`}
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                <TasksContainerHandeler
+                  status={item.id}
+                  setOverContent={setOverContent}
+                />
+                {provided.placeholder}
+              </div>
+            );
+          }}
+        </Droppable>
       </div>
     );
   });

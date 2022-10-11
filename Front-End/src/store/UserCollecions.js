@@ -1,5 +1,35 @@
 import * as toolkitRaw from "@reduxjs/toolkit";
-const { createSlice } = toolkitRaw;
+import { Config } from "../config/config";
+
+const { createSlice, createAsyncThunk } = toolkitRaw;
+const config = new Config();
+
+// Update Task location
+export const updateTaskLocation = createAsyncThunk(
+  "UserCollecions/updateTaskLocation",
+  async (arg, thunkAPI) => {
+    const { rejectWithValue, getState } = thunkAPI;
+    try {
+      const token = getState().UserCollecions.token;
+      console.log(arg);
+      fetch(`${config.api}/api/collecions/updatetask`, {
+        method: "PUT",
+        body: JSON.stringify({
+          _id: arg.targetTask._id,
+          status: arg.targetTask.status,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: "bearer " + token,
+        },
+      });
+
+      return arg;
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  }
+);
 
 const userCollecionsSlice = createSlice({
   name: "UserCollecions",
@@ -49,6 +79,16 @@ const userCollecionsSlice = createSlice({
     },
     setDropLocation: (state, actions) => {
       state.dropLocaion = actions.payload;
+    },
+  },
+  extraReducers: {
+    // Update the drop location of the selected task
+    [updateTaskLocation.fulfilled]: (state, actions) => {
+      state.collections[actions.payload.targetTask.status].splice(
+        actions.payload.index,
+        0,
+        actions.payload.targetTask
+      );
     },
   },
 });

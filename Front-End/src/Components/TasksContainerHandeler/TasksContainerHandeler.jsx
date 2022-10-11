@@ -21,6 +21,7 @@ const TasksContainerHandeler = ({ status }) => {
           priority={el.priority}
           status={status}
           elFromStore={cloneStatusArray[index]}
+          index={index}
         />
       );
     });

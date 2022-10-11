@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { getData, reset } from "../../store/UserCollecions";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
+import { removeTask, updateTaskLocation } from "../../store/UserCollecions";
 
 const config = new Config();
 
@@ -42,7 +44,13 @@ const WorkSpace = () => {
           authorization: "bearer " + token,
         },
       })
-        .then((res) => res.json())
+        .then((res) => {
+          if (res.status !== 200) {
+            dispatch(reset());
+            navigate("/auth");
+          }
+          return res.json();
+        })
         .then((data) => {
           if (
             data.data[0].collections.Completed.length > 0 ||
@@ -51,12 +59,13 @@ const WorkSpace = () => {
             data.data[0].collections.TODO.length > 0 ||
             data.data[0].collections.UnderReview.length > 0
           ) {
+            console.log(data);
             dispatch(getData(data.data[0].collections));
           }
           FirstLunch.current = false;
         });
     }
-  }, [dispatch, token]);
+  }, [dispatch, navigate, token]);
 
   const collections = useMemo(() => {
     return [
@@ -72,6 +81,28 @@ const WorkSpace = () => {
     dispatch(reset());
     navigate("/", { replace: true });
   }, [dispatch, navigate]);
+
+  const Collections = useSelector((state) => state.UserCollecions.collections);
+
+  const onDragEnd = ({ destination, source }) => {
+    if (
+      !destination ||
+      (destination.index === source.index &&
+        destination.droppableId === source.droppableId)
+    ) {
+      return;
+    }
+
+    const targetTask = { ...Collections[source.droppableId][source.index] };
+    targetTask.status = destination.droppableId;
+    const index = destination.index;
+    dispatch(removeTask(Collections[source.droppableId][source.index]));
+    dispatch(updateTaskLocation({ targetTask, index })).then((res) => {
+      if (res.meta.requestStatus !== "fulfilled") {
+        navigate("/auth");
+      }
+    });
+  };
 
   return (
     <>
@@ -91,11 +122,13 @@ const WorkSpace = () => {
           </MainButton>
         </header>
         <div className={styles.contentContainer}>
-          <ToDoGroup
-            collections={collections}
-            setOverContent={setOverContent}
-            status={status}
-          />
+          <DragDropContext onDragEnd={onDragEnd}>
+            <ToDoGroup
+              collections={collections}
+              setOverContent={setOverContent}
+              status={status}
+            />
+          </DragDropContext>
         </div>
       </div>
     </>
