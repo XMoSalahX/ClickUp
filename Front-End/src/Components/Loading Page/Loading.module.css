@@ -1,38 +1,56 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.loadingContainer {
+  position: fixed;
+  background-color: #fafbfc;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999999;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+}
+
+.londingContent {
+  width: 400px;
+  height: 240px;
+}
+
+.lodingLogo {
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 240px;
+  height: 240px;
+  margin: 0 auto;
 }
 
-.App-link {
-  color: #61dafb;
+.waveIcon {
+  position: relative;
+  z-index: 10;
+  display: block;
+  animation: waveIconPulse 1.83s 0.4s infinite;
+  width: 76px;
+  height: 91px;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzYiIGhlaWdodD0iOTEiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibS4yMzQgNjkuNjQgMTMuOTItMTAuNjY0YzcuMzk1IDkuNjUyIDE1LjI1MiAxNC4xIDIzLjk5OCAxNC4xIDguNyAwIDE2LjMzNC00LjM5NSAyMy4zOTYtMTMuOTcxTDc1LjY2NyA2OS41MWMtMTAuMTkgMTMuODA4LTIyLjg1MyAyMS4xMDQtMzcuNTE1IDIxLjEwNC0xNC42MTUgMC0yNy40LTcuMjQ5LTM3LjkxOC0yMC45NzZaIiBmaWxsPSJ1cmwoI2EpIi8+PHBhdGggZD0iTTM4LjEwNSAyMy4yOTEgMTMuMzMgNDQuNjQxIDEuODc3IDMxLjM2IDM4LjE1Ny4wOTRsMzUuOTk2IDMxLjI4OC0xMS41MDYgMTMuMjM2TDM4LjEwNSAyMy4yOVoiIGZpbGw9InVybCgjYikiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIuMjM0IiB5MT0iODAuNDk0IiB4Mj0iNzUuNjY3IiB5Mj0iODAuNDk0IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agc3RvcC1jb2xvcj0iIzg5MzBGRCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzQ5Q0NGOSIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJiIiB4MT0iMS44NzciIHkxPSIzMC4zOSIgeDI9Ijc0LjE1MyIgeTI9IjMwLjM5IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agc3RvcC1jb2xvcj0iI0ZGMDJGMCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0ZGQzgwMCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjwvc3ZnPg==);
+  background-size: cover;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@keyframes waveIconPulse {
+  0% {
+    transform: scaleZ(1);
   }
-  to {
-    transform: rotate(360deg);
+  30% {
+    transform: scale3d(1.1, 1.1, 1.1);
   }
+  60% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+  100% {
+    transform: scaleZ(1);
+  }
+}
+
+.waveAnimation {
+  position: absolute;
 }

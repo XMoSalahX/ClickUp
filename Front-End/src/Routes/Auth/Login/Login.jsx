@@ -13,12 +13,18 @@ import Validatons from "../../../Hooks/Validations";
 import { Config } from "../../../config/config";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setToken } from "../../../store/UserCollecions";
+import { setToken, loadingControl } from "../../../store/UserCollecions";
+import Loading from "../../../Components/Loading Page/Loading";
 
 const config = new Config();
 
 const Login = () => {
+  const loading = useSelector((state) => state.UserCollecions.loading);
   const token = useSelector((state) => state.UserCollecions.token);
+  const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   if (token !== "") {
     fetch(`${config.api}/checkauth`, {
       method: "GET",
@@ -30,12 +36,6 @@ const Login = () => {
       .then((res) => res.json())
       .then((data) => !data.error && navigate("/workspace"));
   }
-
-  const [errorMsg, setErrorMsg] = useState("");
-
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch();
 
   // Form Reneder in height preformance mode
   const formHandler = useMemo(() => {
@@ -68,6 +68,7 @@ const Login = () => {
       };
 
       if (passwordRes && emailRes) {
+        dispatch(loadingControl(true));
         fetch(`${config.api}/api/users/auth`, {
           method: "POST",
           body: JSON.stringify(data),
@@ -80,6 +81,7 @@ const Login = () => {
         })
           .then((res) => res.json())
           .then((data) => {
+            dispatch(loadingControl(false));
             if (data.error === false) {
               dispatch(setToken(data.token));
               navigate("/workspace");
@@ -155,6 +157,7 @@ const Login = () => {
 
   return (
     <div className="formContainer">
+      {loading && <Loading />}
       <HeadAuth>Welcome back!</HeadAuth>
       <FromError errorMsg={errorMsg} />
       <Form>{formHandler}</Form>

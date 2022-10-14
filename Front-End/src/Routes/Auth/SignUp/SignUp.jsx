@@ -11,18 +11,20 @@ import FormLink from "../../../Components/FormLink/FormLink";
 import Validatons from "../../../Hooks/Validations";
 import { Config } from "../../../config/config";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import FromError from "../../../Components/FormError/FromError";
+import { setvalue } from "../../../store/LandingSlice";
+import Loading from "../../../Components/Loading Page/Loading";
+import { loadingControl } from "../../../store/UserCollecions";
 
 const config = new Config();
 
 const Test = memo(({ setErrorMsg }) => {
   const navigate = useNavigate();
-
-  // get inputs element
   const usernameRef = createRef();
   const emailRef = createRef();
   const passwordRef = createRef();
+  const dispatch = useDispatch();
 
   const buttonData = {
     width: "100%",
@@ -59,6 +61,8 @@ const Test = memo(({ setErrorMsg }) => {
     };
 
     if (userRes && passwordRes && emailRes) {
+      dispatch(setvalue(emailRef.current.value));
+      dispatch(loadingControl(true));
       fetch(`${config.api}/api/users/create`, {
         method: "POST",
         body: JSON.stringify(data),
@@ -68,6 +72,7 @@ const Test = memo(({ setErrorMsg }) => {
       })
         .then((res) => res.json())
         .then((data) => {
+          dispatch(loadingControl(false));
           if (data.error === false) {
             navigate("/auth/verify");
           } else {
@@ -144,9 +149,11 @@ const Test = memo(({ setErrorMsg }) => {
 
 const SignUp = () => {
   const [errorMsg, setErrorMsg] = useState("");
+  const loading = useSelector((state) => state.UserCollecions.loading);
 
   return (
     <div className="formContainer">
+      {loading && <Loading />}
       <HeadAuth>Let's go!</HeadAuth>
       <FromError errorMsg={errorMsg} />
       <Test setErrorMsg={setErrorMsg} />

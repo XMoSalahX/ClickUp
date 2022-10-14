@@ -64,7 +64,11 @@ const routes = createBrowserRouter([
       },
       {
         path: "forgot",
-        element: <Forget />,
+        element: (
+          <Provider store={store}>
+            <Forget />
+          </Provider>
+        ),
       },
       {
         path: "recover",

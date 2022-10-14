@@ -12,18 +12,19 @@ import FromError from "../../../Components/FormError/FromError";
 import Validatons from "../../../Hooks/Validations";
 import { Config } from "../../../config/config";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../../Components/Loading Page/Loading";
+import { useSelector, useDispatch } from "react-redux";
+import { loadingControl } from "../../../store/UserCollecions";
 
 const config = new Config();
 
 const Forget = () => {
   const [errorMsg, setErrorMsg] = useState("");
-
-  // get inputs element
+  const loading = useSelector((state) => state.UserCollecions.loading);
   const emailRef = createRef();
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // form render in height preformance mode
   const formRender = useMemo(() => {
     const buttonData = {
       width: "100%",
@@ -46,6 +47,7 @@ const Forget = () => {
       };
 
       if (emailRes) {
+        dispatch(loadingControl(true));
         fetch(`${config.api}/api/users/getaccess`, {
           method: "POST",
           body: JSON.stringify(data),
@@ -55,6 +57,7 @@ const Forget = () => {
         })
           .then((res) => res.json())
           .then((data) => {
+            dispatch(loadingControl(false));
             if (data.error === false) {
               navigate("/auth/recover");
             } else {
@@ -97,10 +100,11 @@ const Forget = () => {
         <FormLink to="/auth">or Login</FormLink>
       </>
     );
-  }, [emailRef, navigate]);
+  }, [dispatch, emailRef, navigate]);
 
   return (
     <div className="formContainer">
+      {loading && <Loading />}
       <HeadAuth>Forgot your password?</HeadAuth>
       <FromError errorMsg={errorMsg} />
       <Form>{formRender}</Form>

@@ -3,22 +3,27 @@ import BrandLogo from "../../Components/Brand Logo/BrandLogo";
 import MainButton from "../../Components/MainButton/MainButton";
 import ToDoGroup from "../../Components/ToDoGroup/ToDoGroup";
 import { useEffect, useState, useMemo, useRef } from "react";
-import { Config } from "../../config/config";
 import FormContent from "../../Components/FormContent/FormContent";
 import { useSelector, useDispatch } from "react-redux";
 import { getData, reset } from "../../store/UserCollecions";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import { removeTask, updateTaskLocation } from "../../store/UserCollecions";
-
-const config = new Config();
+import {
+  removeTask,
+  updateTaskLocation,
+  stopFetchAllData,
+} from "../../store/UserCollecions";
+import Loading from "../../Components/Loading Page/Loading";
 
 const WorkSpace = () => {
   const [overContent, setOverContent] = useState(false);
   const status = useRef("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const token = useSelector((state) => state.UserCollecions.token);
+  const firstLunch = useSelector((state) => state.UserCollecions.firstLunch);
+  const loadingValue = useSelector((state) => state.UserCollecions.loading);
 
   const buttonData = useMemo(() => {
     return {
@@ -31,41 +36,16 @@ const WorkSpace = () => {
     };
   }, []);
 
-  const token = useSelector((state) => state.UserCollecions.token);
-
-  const FirstLunch = useRef(true);
-
   useEffect(() => {
-    if (FirstLunch.current === true) {
-      fetch(`${config.api}/api/collecions/gettasks`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          authorization: "bearer " + token,
-        },
-      })
-        .then((res) => {
-          if (res.status !== 200) {
-            dispatch(reset());
-            navigate("/auth");
-          }
-          return res.json();
-        })
-        .then((data) => {
-          if (
-            data.data[0].collections.Completed.length > 0 ||
-            data.data[0].collections.INprogress.length > 0 ||
-            data.data[0].collections.Rework.length > 0 ||
-            data.data[0].collections.TODO.length > 0 ||
-            data.data[0].collections.UnderReview.length > 0
-          ) {
-            console.log(data);
-            dispatch(getData(data.data[0].collections));
-          }
-          FirstLunch.current = false;
-        });
+    if (firstLunch === true) {
+      dispatch(getData()).then((res) => {
+        if (res.meta.requestStatus !== "fulfilled") {
+          navigate("/auth");
+        }
+      });
+      dispatch(stopFetchAllData());
     }
-  }, [dispatch, navigate, token]);
+  }, [dispatch, firstLunch, navigate, token]);
 
   const collections = useMemo(() => {
     return [
@@ -96,6 +76,7 @@ const WorkSpace = () => {
     const targetTask = { ...Collections[source.droppableId][source.index] };
     targetTask.status = destination.droppableId;
     const index = destination.index;
+
     dispatch(removeTask(Collections[source.droppableId][source.index]));
     dispatch(updateTaskLocation({ targetTask, index })).then((res) => {
       if (res.meta.requestStatus !== "fulfilled") {
@@ -109,7 +90,7 @@ const WorkSpace = () => {
       {overContent && status.current !== "" && (
         <FormContent setOverContent={setOverContent} status={status} />
       )}
-
+      {loadingValue && <Loading />}
       <div className={styles.workSpaceContainer}>
         <header className={styles.workSpaceHeader}>
           <BrandLogo />
