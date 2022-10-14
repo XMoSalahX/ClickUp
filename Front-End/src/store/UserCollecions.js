@@ -106,6 +106,7 @@ const userCollecionsSlice = createSlice({
         Completed: [],
       };
       state.dropLocaion = "";
+      state.firstLunch = true;
     },
     editTask: (state, actions) => {
       const indexOfTask = state.collections[actions.payload.status].findIndex(
