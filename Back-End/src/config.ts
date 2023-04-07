@@ -15,8 +15,9 @@ const {
   SALT_ROUNDS,
   JWT_SECRET,
 } = process.env;
-// const MONGO_URL = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@clickupv2.rjxy6im.mongodb.net/?retryWrites=true&w=majority`;
-const MONGO_URL = `mongodb://localhost:27017`;
+const MONGO_URL = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@private.hpheqtq.mongodb.net/?retryWrites=true&w=majority
+`;
+// const MONGO_URL = `mongodb://localhost:27017`;
 
 // Export Env Variable
 export const config = {
