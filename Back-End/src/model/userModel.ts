@@ -1,12 +1,22 @@
-import { Schema, model } from "mongoose";
+import { getModelForClass, prop } from "@typegoose/typegoose";
 
-// Database Schema
-const user = new Schema({
-  _id: { type: String, required: true },
-  name: { type: String, required: true },
-  password: { type: String, required: true },
-  status: { type: String, required: true },
-  verification: { type: Number, required: true },
+export class User {
+  @prop({ required: true })
+  _id!: string;
+
+  @prop({ required: true })
+  name!: string;
+
+  @prop({ required: true })
+  password!: string;
+
+  @prop({ required: true })
+  status!: string;
+
+  @prop({ required: true })
+  verification!: number;
+}
+
+export const UserModel = getModelForClass(User, {
+  schemaOptions: { timestamps: true },
 });
-
-export const userModel = model("user", user);

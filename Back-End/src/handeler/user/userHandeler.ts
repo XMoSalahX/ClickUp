@@ -1,32 +1,59 @@
-import { userModel } from "../model/userModel";
+import { UserModel } from "../../model/userModel";
 import { Request, Response, Application } from "express";
-import { Error } from "../utlities/error_response";
-import checkUserExist from "../middleware/checkUserExist";
-import mailHaneler from "../utlities/mail controler";
+import { Error } from "../../utlities/error_response";
+import checkUserExist from "../../middleware/checkUserExist/checkUserExist";
+import mailHaneler from "../../utlities/mail controler";
 import { hashSync, compareSync } from "bcrypt";
-import { config } from "../config";
+import { config } from "../../config";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { UserDto } from "./dto/user.dto";
+import { validate } from "class-validator";
+import { VerificationCodeDto } from "./dto/verificationCode.dto";
+import { AuthDto } from "./dto/auth.dto";
+import { AccessTokenRquestDto } from "./dto/accessTokenRequest.dto";
+import { ChangPasswordDto } from "./dto/changPassword.dto";
 
 const error = new Error();
 
 // Create a new user
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const { email, password, name, currentStatus, currentVerification } =
-      req.body;
+    const body: UserDto = req.body;
+
+    const userDto = new UserDto();
+    userDto.email = body.email;
+    userDto.password = body.password;
+    userDto.name = body.name;
+    userDto.currentStatus = body.currentStatus;
+    userDto.currentVerification = body.currentVerification;
+
+    const errors = await validate(userDto);
+    if (errors.length > 0) {
+      return res.status(400).json({
+        error: true,
+        input: errors[0].property,
+        response_msg: Object.values(errors[0].constraints as any)[0],
+      });
+    }
+
+    const {
+      lowerCaseEmail,
+      password,
+      name,
+      currentVerification,
+      currentStatus,
+    } = userDto;
+
+    const email = lowerCaseEmail;
 
     let ver = Math.floor(Math.random() * (9999 - 999) + 999);
 
     if (currentStatus === "Pending") {
       ver = currentVerification;
-      var mailRes = await mailHaneler(
-        "ClickUp Verification Message",
-        email,
-        ver
-      );
+      await mailHaneler("ClickUp Verification Message", email, ver);
       res.status(200).json({ error: false });
     } else {
-      var mailRes = await mailHaneler(
+      const mailRes = await mailHaneler(
         "ClickUp Verification Message",
         email,
         ver
@@ -37,7 +64,7 @@ export const createUser = async (req: Request, res: Response) => {
         parseInt(config.server.salt as string)
       );
 
-      const user = new userModel({
+      const user = new UserModel({
         _id: email,
         name,
         email,
@@ -68,8 +95,27 @@ export const createUser = async (req: Request, res: Response) => {
 // Verification user account
 const verification = async (req: Request, res: Response) => {
   try {
-    const { email, verificationCode } = req.body;
-    const result = await userModel.updateOne(
+    const body: VerificationCodeDto = req.body;
+
+    const verificationDto = new VerificationCodeDto();
+
+    verificationDto.email = body.email;
+    verificationDto.verificationCode = body.verificationCode as number;
+
+    const errors = await validate(verificationDto);
+    if (errors.length > 0) {
+      return res.status(400).json({
+        error: true,
+        input: errors[0].property,
+        response_msg: Object.values(errors[0].constraints as any)[0],
+      });
+    }
+
+    const { lowerCaseEmail, verificationCode } = verificationDto;
+
+    const email = lowerCaseEmail;
+
+    const result = await UserModel.updateOne(
       {
         _id: email,
         verification: verificationCode,
@@ -91,8 +137,26 @@ const verification = async (req: Request, res: Response) => {
 // User Login to account
 const auth = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
-    const user = await userModel.findOne(
+    const body: AuthDto = req.body;
+
+    const authDto = new AuthDto();
+
+    authDto.email = body.email;
+    authDto.password = body.password;
+
+    const errors = await validate(authDto);
+    if (errors.length > 0) {
+      return res.status(400).json({
+        error: true,
+        input: errors[0].property,
+        response_msg: Object.values(errors[0].constraints as any)[0],
+      });
+    }
+    const { lowerCaseEmail, password } = authDto;
+
+    const email = lowerCaseEmail;
+
+    const user = await UserModel.findOne(
       { _id: email, status: "Active" },
       {
         _id: 1,
@@ -126,10 +190,27 @@ const auth = async (req: Request, res: Response) => {
 
 // Send access token request
 const accessTokenRequest = async (req: Request, res: Response) => {
-  const { email } = req.body;
+  const body: AccessTokenRquestDto = req.body;
+
+  const accessTokenRequest = new AccessTokenRquestDto();
+
+  accessTokenRequest.email = body.email;
+
+  const errors = await validate(accessTokenRequest);
+  if (errors.length > 0) {
+    return res.status(400).json({
+      error: true,
+      input: errors[0].property,
+      response_msg: Object.values(errors[0].constraints as any)[0],
+    });
+  }
+
+  const { lowerCaseEmail } = accessTokenRequest;
+
+  const email = lowerCaseEmail;
 
   try {
-    const user = await userModel.findOne(
+    const user = await UserModel.findOne(
       { _id: email },
       { _id: 1, password: 1 }
     );
@@ -162,26 +243,37 @@ const accessTokenRequest = async (req: Request, res: Response) => {
 // change password
 const changePassword = async (req: Request, res: Response) => {
   try {
-    const { authraization } = req.headers;
-    let { password } = req.body;
+    const body: ChangPasswordDto = req.body;
 
-    if (authraization != undefined) {
-      const token = (authraization as string).split(" ")[1];
-      try {
-        const userToken = jwt.verify(token, config.server.jwt as string);
-        const email = (userToken as JwtPayload).user._id;
-        password = hashSync(
-          password + config.server.hash,
-          parseInt(config.server.salt as string)
-        );
-        await userModel.updateOne({ _id: email }, { $set: { password } });
+    const changPasswordDto = new ChangPasswordDto();
 
-        res.status(200).json({ error: false });
-      } catch (e) {
-        res.status(401).json(error.error_401);
-      }
-    } else {
-      res.status(401).send(error.error_401);
+    changPasswordDto.password = body.password;
+    changPasswordDto.authraization = (
+      req.headers?.authraization as string
+    ).split(" ")[1] as string;
+    const errors = await validate(changPasswordDto);
+    if (errors.length > 0) {
+      return res.status(400).json({
+        error: true,
+        input: errors[0].property,
+        response_msg: Object.values(errors[0].constraints as any)[0],
+      });
+    }
+
+    let { password, authraization } = changPasswordDto;
+
+    try {
+      const userToken = jwt.verify(authraization, config.server.jwt as string);
+      const email = (userToken as JwtPayload).user._id;
+      password = hashSync(
+        password + config.server.hash,
+        parseInt(config.server.salt as string)
+      );
+      await UserModel.updateOne({ _id: email }, { $set: { password } });
+
+      res.status(200).json({ error: false });
+    } catch (e) {
+      res.status(401).json(error.error_401);
     }
   } catch (e) {
     console.log("Error from changePassword function.");
@@ -192,7 +284,7 @@ const changePassword = async (req: Request, res: Response) => {
 const checkauth = async (req: Request, res: Response) => {
   try {
     if (req.headers.authorization !== undefined) {
-      const x = jwt.verify(
+      jwt.verify(
         req.headers.authorization.split(" ")[1],
         config.server.jwt as string
       );

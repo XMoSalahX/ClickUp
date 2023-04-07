@@ -44,7 +44,7 @@ const FormHandler = memo(({ setErrorMsg }) => {
 
     const data = {
       email: Email,
-      verificationCode: verificationCodeInput.current.value,
+      verificationCode: parseInt(verificationCodeInput.current.value),
     };
 
     if (Email && verificaionCodeRef) {

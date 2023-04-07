@@ -1,6 +1,6 @@
 import { Request, Response, Application } from "express";
-import userEndPoint from "../handeler/userHandeler";
-import collectionsEndpoint from "../handeler/collectionsHandeler";
+import userEndPoint from "../handeler/user/userHandeler";
+import collectionsEndpoint from "../handeler/todos/collectionsHandeler";
 
 // Route function to hold all endpoint
 const route = (app: Application) => {
